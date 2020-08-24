@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="travModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="admin_id" />
+    </Key>
+    <Property Name="admin_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="admin_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="admin_password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Hotels" Relationship="Self.FK__Hotel__admin_id__403A8C7D" FromRole="Admin" ToRole="Hotel" />
+    <NavigationProperty Name="Restaurants" Relationship="Self.FK__Restauran__admin__3C69FB99" FromRole="Admin" ToRole="Restaurant" />
+  </EntityType>
+  <EntityType Name="Hotel">
+    <Key>
+      <PropertyRef Name="hotel_id" />
+    </Key>
+    <Property Name="hotel_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="hotel_loc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hotel_contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="owner_id" Type="Int32" />
+    <Property Name="admin_id" Type="Int32" />
+    <NavigationProperty Name="Admin" Relationship="Self.FK__Hotel__admin_id__403A8C7D" FromRole="Hotel" ToRole="Admin" />
+    <NavigationProperty Name="Owner" Relationship="Self.FK__Hotel__owner_id__3F466844" FromRole="Hotel" ToRole="Owner" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK__Room__hotel_id__45F365D3" FromRole="Hotel" ToRole="Room" />
+  </EntityType>
+  <EntityType Name="Menu">
+    <Key>
+      <PropertyRef Name="menu_id" />
+    </Key>
+    <Property Name="menu_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="price" Type="Int32" Nullable="false" />
+    <Property Name="restaurant_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Restaurant" Relationship="Self.FK__Menu__restaurant__4316F928" FromRole="Menu" ToRole="Restaurant" />
+  </EntityType>
+  <EntityType Name="Owner">
+    <Key>
+      <PropertyRef Name="owner_id" />
+    </Key>
+    <Property Name="owner_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="owner_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="owner_password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="owner_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="owner_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Hotels" Relationship="Self.FK__Hotel__owner_id__3F466844" FromRole="Owner" ToRole="Hotel" />
+    <NavigationProperty Name="Restaurants" Relationship="Self.FK__Restauran__owner__3B75D760" FromRole="Owner" ToRole="Restaurant" />
+  </EntityType>
+  <EntityType Name="Restaurant">
+    <Key>
+      <PropertyRef Name="restaurant_id" />
+    </Key>
+    <Property Name="restaurant_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="restaurant_loc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="restaurant_contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="owner_id" Type="Int32" />
+    <Property Name="admin_id" Type="Int32" />
+    <NavigationProperty Name="Admin" Relationship="Self.FK__Restauran__admin__3C69FB99" FromRole="Restaurant" ToRole="Admin" />
+    <NavigationProperty Name="Menus" Relationship="Self.FK__Menu__restaurant__4316F928" FromRole="Restaurant" ToRole="Menu" />
+    <NavigationProperty Name="Owner" Relationship="Self.FK__Restauran__owner__3B75D760" FromRole="Restaurant" ToRole="Owner" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="room_id" />
+    </Key>
+    <Property Name="room_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="room_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="room_price" Type="Int32" Nullable="false" />
+    <Property Name="hotel_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Hotel" Relationship="Self.FK__Room__hotel_id__45F365D3" FromRole="Room" ToRole="Hotel" />
+  </EntityType>
+  <EntityType Name="Traveler">
+    <Key>
+      <PropertyRef Name="traveler_id" />
+    </Key>
+    <Property Name="traveler_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="traveler_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="traveler_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="traveler_password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="traveler_contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Hotel__admin_id__403A8C7D">
+    <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Admin">
+        <PropertyRef Name="admin_id" />
+      </Principal>
+      <Dependent Role="Hotel">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Restauran__admin__3C69FB99">
+    <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+    <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Admin">
+        <PropertyRef Name="admin_id" />
+      </Principal>
+      <Dependent Role="Restaurant">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Hotel__owner_id__3F466844">
+    <End Role="Owner" Type="Self.Owner" Multiplicity="0..1" />
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owner">
+        <PropertyRef Name="owner_id" />
+      </Principal>
+      <Dependent Role="Hotel">
+        <PropertyRef Name="owner_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Room__hotel_id__45F365D3">
+    <End Role="Hotel" Type="Self.Hotel" Multiplicity="1" />
+    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hotel">
+        <PropertyRef Name="hotel_id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="hotel_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Menu__restaurant__4316F928">
+    <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="1" />
+    <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurant">
+        <PropertyRef Name="restaurant_id" />
+      </Principal>
+      <Dependent Role="Menu">
+        <PropertyRef Name="restaurant_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Restauran__owner__3B75D760">
+    <End Role="Owner" Type="Self.Owner" Multiplicity="0..1" />
+    <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owner">
+        <PropertyRef Name="owner_id" />
+      </Principal>
+      <Dependent Role="Restaurant">
+        <PropertyRef Name="owner_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="travEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="Hotels" EntityType="Self.Hotel" />
+    <EntitySet Name="Menus" EntityType="Self.Menu" />
+    <EntitySet Name="Owners" EntityType="Self.Owner" />
+    <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+    <EntitySet Name="Rooms" EntityType="Self.Room" />
+    <EntitySet Name="Travelers" EntityType="Self.Traveler" />
+    <AssociationSet Name="FK__Hotel__admin_id__403A8C7D" Association="Self.FK__Hotel__admin_id__403A8C7D">
+      <End Role="Admin" EntitySet="Admins" />
+      <End Role="Hotel" EntitySet="Hotels" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Restauran__admin__3C69FB99" Association="Self.FK__Restauran__admin__3C69FB99">
+      <End Role="Admin" EntitySet="Admins" />
+      <End Role="Restaurant" EntitySet="Restaurants" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Hotel__owner_id__3F466844" Association="Self.FK__Hotel__owner_id__3F466844">
+      <End Role="Owner" EntitySet="Owners" />
+      <End Role="Hotel" EntitySet="Hotels" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Room__hotel_id__45F365D3" Association="Self.FK__Room__hotel_id__45F365D3">
+      <End Role="Hotel" EntitySet="Hotels" />
+      <End Role="Room" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Menu__restaurant__4316F928" Association="Self.FK__Menu__restaurant__4316F928">
+      <End Role="Restaurant" EntitySet="Restaurants" />
+      <End Role="Menu" EntitySet="Menus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Restauran__owner__3B75D760" Association="Self.FK__Restauran__owner__3B75D760">
+      <End Role="Owner" EntitySet="Owners" />
+      <End Role="Restaurant" EntitySet="Restaurants" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
